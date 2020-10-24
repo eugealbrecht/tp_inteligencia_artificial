@@ -1,3 +1,5 @@
+from itertools import count
+
 from simpleai.search import(
 SearchProblem,
 breadth_first,
@@ -57,10 +59,11 @@ class MercadoArtificial(SearchProblem):
         camiones, paquetes = state
         id_camion, origen_camion, capacidad = camiones
         id_paquete, origen_paquete, destino_paquete = paquetes
+
         pass
 
     def cost(self, state1, action, state2):
-        pass
+        return 1 
 
     def actions(self, state):
         pass
@@ -69,7 +72,11 @@ class MercadoArtificial(SearchProblem):
         pass
 
     def heuristic(self, state):
-        pass
+        camiones, paquetes=state
+        paquetes=list(paquetes)
+        cant_paquetes=count(paquetes[0])
+        # me faltan tantas acciones como paquetes me falten entregar para llegar a la cantidad total de paquetes en el camion
+        return cant_paquetes - len(state)
 
 if __name__ == '__main__':
     problema = MercadoArtificial(INITIAL_STATE)
