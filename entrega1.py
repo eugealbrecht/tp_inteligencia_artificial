@@ -38,18 +38,20 @@ itinerario = planear_camiones(
   ],
 )
 
-CIUDADES = {'rafaela',
-            'sunchales',
-            'lehmann',
-            'susana',
-            'sc_de_saguier',
-            'esperanza',
-            'recreo',
-            'santa_fe',
-            'san_vicente',
-            'santo_tome',
-            'angelica',
-            'sauce_viejo',}
+CIUDADES_ADYACENTES = {
+    'sauce_viejo': [('santo_tome', 15)],
+    'santo_tome': [('sauce_viejo',15),('santa_fe', 5), ('angelica', 85)],
+    'santa_fe': [('santo_tome',5), ('recreo',10)],
+    'recreo': [('santa_fe',10),('esperanza',20)],
+    'esperanza': [('recreo',20),('rafaela',70)],
+    'rafaela':[('lehmann',8),('susana',10),('esperanza',70)],
+    'lehmann': [('rafaela',8),('sunchales',32)],
+    'sunchales': [('lehmann',8)],
+    'susana': [('rafaela',10),('angelica',25)],
+    'angelica':[('susana',25),('sc_de_saguier',60),('santo_tome',85),('san_vicente',18)],
+    'sc_de_saguier': [('angelica'),60],
+    'san_vicente':[('angelica',18)],
+}
 
 PUNTOSDECARGA= {'rafaela', 'santa_fe'}
 
