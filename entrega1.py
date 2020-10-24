@@ -36,9 +36,14 @@ itinerario = planear_camiones(
   ],
 )
 
+CIUDADES = {}
+
 class MercadoArtificial(SearchProblem):
 
     def is_goal(self, state):
+        camiones, paquetes = state
+        id_camion, origen_camion, capacidad = camiones
+        id_paquete, origen_paquete, destino_paquete = paquetes
         pass
 
     def cost(self, state1, action, state2):
