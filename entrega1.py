@@ -36,7 +36,18 @@ itinerario = planear_camiones(
   ],
 )
 
-CIUDADES = {}
+CIUDADES = {'rafaela',
+            'sunchales',
+            'lehmann',
+            'susana',
+            'sc_de_saguier',
+            'esperanza',
+            'recreo',
+            'santa_fe',
+            'san_vicente',
+            'santo_tome',
+            'angelica',
+            'sauce_viejo',}
 
 class MercadoArtificial(SearchProblem):
 
