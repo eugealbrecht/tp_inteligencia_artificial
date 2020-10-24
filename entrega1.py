@@ -36,8 +36,6 @@ itinerario = planear_camiones(
   ],
 )
 
-
-
 class MercadoArtificial(SearchProblem):
 
     def is_goal(self, state):
