@@ -49,6 +49,8 @@ CIUDADES = {'rafaela',
             'angelica',
             'sauce_viejo',}
 
+PUNTOSDECARGA= {'rafaela', 'santa_fe'}
+
 class MercadoArtificial(SearchProblem):
 
     def is_goal(self, state):
