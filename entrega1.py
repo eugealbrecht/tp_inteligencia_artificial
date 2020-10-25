@@ -104,7 +104,7 @@ class MercadoArtificial(SearchProblem):
     def heuristic(self, state):
         camiones, paquetes=state
         paquetes=list(paquetes)
-        cant_paquetes=count(paquetes[0])
+        cant_paquetes=len(paquetes)
         # me faltan tantas acciones como paquetes me falten entregar para llegar a la cantidad total de paquetes en el camion
         return cant_paquetes - len(state)
 
