@@ -2,12 +2,12 @@ from simpleai.search import (
     SearchProblem,
     breadth_first,
     depth_first,
+    iterative_limited_depth_first,
     uniform_cost,
-    greedy,
-    astar,
-    iterative_limited_depth_first)
+)
 
 from simpleai.search.viewers import WebViewer, BaseViewer
+
 
 INITIAL_STATE=()
 
@@ -34,12 +34,12 @@ class MercadoArtificial(SearchProblem):
 
     def is_goal(self, state):
         camiones, paquetes = state
-        id_camion, origen_camion, capacidad = camiones
-        camiones=list(camiones)
-        id_paquete, origen_paquete, destino_paquete = paquetes
-        paquetes=list(paquetes)
-        #si los camiones se encuentran en las ciudades de puntosdecarga quiere decir que llegaron al destino final
-        return (set(camiones[1]) in PUNTOSDECARGA) and len(paquetes)==0
+        id_camion, origen_camion, capacidad=camiones
+        id_paquete, origen_paquete, destino_paquete=paquetes
+        camiones = list(camiones)
+        paquetes = list(paquetes)
+        # si los camiones se encuentran en las ciudades de puntosdecarga quiere decir que llegaron al destino final
+        return (set(camiones[1]) == ('santa_fe', 'rafaela') or set(camiones[1]) == ('rafaela', 'santa_fe')) and len(paquetes) == 0
 
     def cost(self, state1, action, state2):
         camiones1, paquetes1 = state1
@@ -53,6 +53,7 @@ class MercadoArtificial(SearchProblem):
                     if y==x:
                         consumo_combustible_origen=camion_origen[2]
         return (consumo_combustible_destino - consumo_combustible_origen)
+
 
     def actions(self, state):
         camiones, paquetes = state
@@ -109,7 +110,15 @@ class MercadoArtificial(SearchProblem):
 
 def planear_camiones(metodo, camiones, paquetes):
     #Habria que ver si se le pasa tal cual vienen los paquetes y camiones o habria que agregarlos a una lista
-    INITIAL_STATE=(camiones, paquetes)
+    lista = []
+    for camion in camiones:
+        lista.extend(((camion[1], camion[2]), ()))
+
+    lista2 = []
+    for index, paquete in enumerate(paquetes):
+        lista2.append(index)
+
+    INITIAL_STATE=(tuple(lista), tuple(lista2))
 
     problem = MercadoArtificial(INITIAL_STATE)
 
@@ -158,25 +167,5 @@ def planear_camiones(metodo, camiones, paquetes):
 
 
 if __name__ == '__main__':
-    #problema = MercadoArtificial(INITIAL_STATE)
-    camiones = [
-        # id, ciudad de origen, y capacidad de combustible máxima (litros)
-        ('c1', 'rafaela', 1.5),
-        ('c2', 'rafaela', 2),
-        ('c3', 'santa_fe', 2),
-    ]
+    problema = MercadoArtificial(INITIAL_STATE)
 
-    paquetes = [
-        # id, ciudad de origen, y ciudad de destino
-        ('p1', 'rafaela', 'angelica'),
-        ('p2', 'rafaela', 'santa_fe'),
-        ('p3', 'esperanza', 'susana'),
-        ('p4', 'recreo', 'san_vicente'),
-    ]
-
-    itinerario = planear_camiones(
-        # método de búsqueda a utilizar. Puede ser: astar, breadth_first, depth_first, uniform_cost o greedy
-        breadth_first, camiones, paquetes
-    )
-
-    print(itinerario)
