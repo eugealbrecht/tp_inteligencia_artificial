@@ -1,5 +1,3 @@
-from itertools import count
-
 from simpleai.search import (
     SearchProblem,
     breadth_first,
@@ -48,9 +46,9 @@ class MercadoArtificial(SearchProblem):
         camiones2, paquetes2 = state2
         consumo_combustible_origen=0
         consumo_combustible_destino=0
-        for x,camion in enumerate(camiones2):
-            if camion[x]==action[0]:
-                consumo_combustible_destino=camion[2]
+        for x,camion_destino in enumerate(camiones2):
+            if camion_destino[x]==action[0]:
+                consumo_combustible_destino=camion_destino[2]
                 for y, camion_origen in enumerate(camiones1):
                     if y==x:
                         consumo_combustible_origen=camion_origen[2]
