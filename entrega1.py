@@ -9,9 +9,6 @@ from simpleai.search import (
 from simpleai.search.viewers import WebViewer, BaseViewer
 from simpleai.search.traditional import astar
 
-INITIAL_STATE = ((('sunchales',1.5,()), ('sunchales',2,()), ('rafaela',2, ())), ('p1', 'p2', 'p3', 'p4'))
-
-
 CIUDADES_ADYACENTES = {
     'sauce_viejo': [('santo_tome', 15)],
     'santo_tome': [('sauce_viejo',15),('santa_fe', 5), ('angelica', 85)],
@@ -36,8 +33,6 @@ METODOS = {
     'uniform_cost': uniform_cost,
     'astar': astar,
 }
-
-listado_global_paquetes = []
 
 class MercadoArtificial(SearchProblem):
 
@@ -166,15 +161,18 @@ def planear_camiones(metodo, camiones, paquetes):
 
     lista_camiones = []
     for camion in camiones:
-        lista_camiones.append(((camion[0],camion[1], camion[2],()))) #origen, capacidad, paquetes
+        lista_camiones.append(((camion[0],camion[1], camion[2],()))) #id, origen, capacidad, paquetes
 
     lista_paquetes = []
     for paquete in paquetes:
-        lista_paquetes.append(paquete) #le paso todos los valores, ver.
+        lista_paquetes.append((paquete[0], paquete[1], paquete[2])) #le paso todos los valores, ver.
+                            #id, origen, destino
 
-    estado_inicial = (tuple(lista_camiones), tuple(lista_paquetes))
+    lista_camiones = tuple(lista_camiones)
+    lista_paquetes = tuple(lista_paquetes)
+    INITIAL_STATE = (lista_camiones, lista_paquetes)
 
-    problema = MercadoArtificial(estado_inicial)
+    problema = MercadoArtificial(INITIAL_STATE)
     result = METODOS[metodo](problema)
 
     itinerario = []
@@ -182,22 +180,37 @@ def planear_camiones(metodo, camiones, paquetes):
     for action, state in result.path(): #por cada accion y estado del camino
         if action != None:
             camiones_estado, paquetes_estado = state
-            camiones_accion, paquetes_accion = action
-
-            camion = camiones_accion
+            id_camion, ciudad_camion, consumo_a_ciudad = action
 
             #destino del camion
             for camion_estado in camiones_estado:
-                if camion_estado[0] == camion:
-                    camion_actual = camion_estado[0]
+                if camion_estado[0] == id_camion:
+                    id_camion_actual = camion_estado[0]
                     ciudad_destino = camion_estado[1]
+                    paquetes_camion = camion_estado[2]
 
-            consumo_a_ciudad = action[2]
 
-            paquetes_camion = camion_actual[2]
-
-            itinerario.append((camion,ciudad_destino,consumo_a_ciudad,paquetes_camion))
+            itinerario.append((id_camion_actual,ciudad_destino,consumo_a_ciudad,list(paquetes_camion)))
         else:
             pass
 
     return itinerario
+
+if __name__ == '__main__':
+    """camiones=[
+        # id, ciudad de origen, y capacidad de combustible máxima (litros)
+        ('c1', 'rafaela', 1.5),
+        ('c2', 'rafaela', 2),
+        ('c3', 'santa_fe', 2),
+    ]
+    paquetes=[
+        # id, ciudad de origen, y ciudad de destino
+        ('p1', 'rafaela', 'angelica'),
+        ('p2', 'rafaela', 'santa_fe'),
+        ('p3', 'esperanza', 'susana'),
+        ('p4', 'recreo', 'san_vicente'),
+    ]
+    itinerario = planear_camiones(
+        # método de búsqueda a utilizar. Puede ser: astar, breadth_first, depth_first, uniform_cost o greedy
+        "breadth_first",camiones,paquetes
+    )"""
