@@ -2,14 +2,15 @@ from simpleai.search import (
     SearchProblem,
     breadth_first,
     depth_first,
-    iterative_limited_depth_first,
     uniform_cost,
-    astar)
-
+    astar,
+    iterative_limited_depth_first
+)
 from simpleai.search.viewers import WebViewer, BaseViewer
+from simpleai.search.traditional import astar
 
+INITIAL_STATE = ((('sunchales',1.5,()), ('sunchales',2,()), ('rafaela',2, ())), ('p1', 'p2', 'p3', 'p4'))
 
-INITIAL_STATE=()
 
 CIUDADES_ADYACENTES = {
     'sauce_viejo': [('santo_tome', 15)],
@@ -34,8 +35,6 @@ class MercadoArtificial(SearchProblem):
 
     def is_goal(self, state):
         camiones, paquetes = state
-        id_camion, origen_camion, capacidad=camiones
-        id_paquete, origen_paquete, destino_paquete=paquetes
         camiones = list(camiones)
         paquetes = list(paquetes)
         # si los camiones se encuentran en las ciudades de puntosdecarga quiere decir que llegaron al destino final
@@ -110,15 +109,15 @@ class MercadoArtificial(SearchProblem):
 
 def planear_camiones(metodo, camiones, paquetes):
     #Habria que ver si se le pasa tal cual vienen los paquetes y camiones o habria que agregarlos a una lista
-    lista = []
+    lista_camiones = []
     for camion in camiones:
-        lista.extend(((camion[1], camion[2]), ()))
+        lista_camiones.extend(((camion[1], camion[2]), ()))
 
-    lista2 = []
-    for index, paquete in enumerate(paquetes):
-        lista2.append(index)
+    lista_paquetes = []
+    for x, paquete in enumerate(paquetes):
+        lista_paquetes.append(x)
 
-    INITIAL_STATE=(tuple(lista), tuple(lista2))
+    INITIAL_STATE=(tuple(lista_camiones), tuple(lista_paquetes))
 
     problem = MercadoArtificial(INITIAL_STATE)
 
@@ -167,5 +166,24 @@ def planear_camiones(metodo, camiones, paquetes):
 
 
 if __name__ == '__main__':
-    problema = MercadoArtificial(INITIAL_STATE)
+    camiones=[
+        # id, ciudad de origen, y capacidad de combustible máxima (litros)
+        ('c1', 'rafaela', 1.5),
+        ('c2', 'rafaela', 2),
+        ('c3', 'santa_fe', 2),
+    ]
 
+    paquetes=[
+        # id, ciudad de origen, y ciudad de destino
+        ('p1', 'rafaela', 'angelica'),
+        ('p2', 'rafaela', 'santa_fe'),
+        ('p3', 'esperanza', 'susana'),
+        ('p4', 'recreo', 'san_vicente'),
+    ]
+
+    itinerario = planear_camiones(
+        # método de búsqueda a utilizar. Puede ser: astar, breadth_first, depth_first, uniform_cost o greedy
+        breadth_first,camiones,paquetes
+    )
+
+    print(itinerario)
