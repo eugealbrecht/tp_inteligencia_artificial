@@ -50,11 +50,13 @@ class MercadoArtificial(SearchProblem):
 
 
         for camion in camiones:
+            if len(camion[3]) != 0:
+                return False
             if camion[1] not in CIUDADES_CARGA:
                 return False
             else:
                 return True
-        if len(paquetes) > 0:
+        if len(paquetes) != 0:
             return False
         else:
             return True
@@ -195,5 +197,7 @@ def planear_camiones(metodo, camiones, paquetes):
             paquetes_camion = camion_actual[2]
 
             itinerario.append((camion,ciudad_destino,consumo_a_ciudad,paquetes_camion))
+        else:
+            pass
 
     return itinerario
