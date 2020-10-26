@@ -101,13 +101,17 @@ class MercadoArtificial(SearchProblem):
         for camion in camiones: #por cada camion en el estado
             id_camion_actual, origen_camion_actual, capacidad_camion_actual, paquetes_camion_actual = camion
                 #recorro sus ciudades adyacentes, a las que se puede mover
-            for ciudad in CIUDADES_ADYACENTES[origen_camion_actual]:
+            #buscar INDICE
+            for indice, ciudad in enumerate(CIUDADES_ADYACENTES):
+                if CIUDADES_ADYACENTES == origen_camion_actual:
+                    indice_utilizar = indice
+            for ciudad in CIUDADES_ADYACENTES[indice]:
                     #a partir de los km, calculamos el consumo
-                ciudad_adyacente, distancia = ciudad
-                consumo_a_ciudad = round((distancia / 100),2) #distancia/100
+                #ciudad_adyacente, distancia = ciudad
+                consumo_a_ciudad = round((ciudad[1] / 100),2) #distancia/100
                     #si le alcanza, generamos la acción
                 if capacidad_camion_actual >= consumo_a_ciudad:
-                    acciones.append((id_camion_actual,ciudad_adyacente,consumo_a_ciudad))
+                    acciones.append((id_camion_actual,ciudad[0],consumo_a_ciudad))
 
         return acciones
 
