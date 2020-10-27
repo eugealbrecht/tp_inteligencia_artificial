@@ -197,26 +197,26 @@ def planear_camiones(metodo, camiones, paquetes):
     result = METODOS[metodo](problema)
 
     itinerario = []
+    if result != None:
+        for action, state in result.path(): #por cada accion y estado del camino
+            if action is not None and state is not None:
+                camiones_estado, paquetes_estado = state
+                id_camion, ciudad_camion, consumo_a_ciudad = action
 
-    for action, state in result.path(): #por cada accion y estado del camino
-        if action != None:
-            camiones_estado, paquetes_estado = state
-            id_camion, ciudad_camion, consumo_a_ciudad = action
+                #destino del camion
+                for indice_camion, camion_estado in enumerate(camiones_estado):
+                    if camion_estado[0] == id_camion:
+                        indice = indice_camion
+                ciudad = camiones_estado[indice][1]
+                nafta = action[2]
+                paquetes_camion = camiones_estado[indice][3]
+                lista_paquetes = []
+                for paq in paquetes_camion:
+                    lista_paquetes.append(paq[0])
 
-            #destino del camion
-            for indice_camion, camion_estado in enumerate(camiones_estado):
-                if camion_estado[0] == id_camion:
-                    indice = indice_camion
-            ciudad = camiones_estado[indice][1]
-            nafta = action[2]
-            paquetes_camion = camiones_estado[indice][3]
-            lista_paquetes = []
-            for paq in paquetes_camion:
-                lista_paquetes.append(paq[0])
-
-            itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
-        else:
-            pass
+                itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
+            else:
+                pass
 
     return itinerario
 """
