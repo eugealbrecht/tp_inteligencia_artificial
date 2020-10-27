@@ -48,9 +48,8 @@ class MercadoArtificial(SearchProblem):
             if (len(cam[3]) > 0):
                 paquetes_camion = cam[3]
                 for paq in paquetes_camion:
-                    for paq_2 in PAQUETES_INICIAL:
-                        if paq[0] == paq_2[0] and paq[2] != cam[1]:
-                            return False
+                    if paq[2] != cam[1]:
+                        return False
 
         return True
 
@@ -179,8 +178,6 @@ def planear_camiones(metodo, camiones, paquetes):
     #inicial de cada uno desde result
     global CAMIONES_INICIAL
     CAMIONES_INICIAL = list(camiones)
-    global PAQUETES_INICIAL
-    PAQUETES_INICIAL = list(paquetes)
 
     lista_camiones = []
     for camion in camiones:
