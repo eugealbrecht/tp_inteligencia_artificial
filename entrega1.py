@@ -11,17 +11,17 @@ from simpleai.search.traditional import astar
 
 CIUDADES_ADYACENTES = {
     'sauce_viejo': [('santo_tome', 15)],
-    'santo_tome': [('sauce_viejo',15),('santa_fe', 5), ('angelica', 85)],
-    'santa_fe': [('santo_tome',5), ('recreo',10)],
-    'recreo': [('santa_fe',10),('esperanza',20)],
-    'esperanza': [('recreo',20),('rafaela',70)],
-    'rafaela':[('lehmann',8),('susana',10),('esperanza',70)],
-    'lehmann': [('rafaela',8),('sunchales',32)],
-    'sunchales': [('lehmann',8)],
-    'susana': [('rafaela',10),('angelica',25)],
-    'angelica':[('susana',25),('sc_de_saguier',60),('santo_tome',85),('san_vicente',18)],
-    'sc_de_saguier': [('angelica'),60],
-    'san_vicente':[('angelica',18)],
+    'santo_tome': [('sauce_viejo', 15), ('santa_fe', 5), ('angelica', 85)],
+    'santa_fe': [('santo_tome', 5), ('recreo', 10)],
+    'recreo': [('santa_fe', 10), ('esperanza', 20)],
+    'esperanza': [('recreo', 20), ('rafaela', 70)],
+    'rafaela': [('lehmann', 8), ('susana', 10), ('esperanza', 70)],
+    'lehmann': [('rafaela', 8), ('sunchales', 32)],
+    'sunchales': [('lehmann', 8)],
+    'susana': [('rafaela', 10), ('angelica', 25)],
+    'angelica': [('susana', 25), ('sc_de_saguier', 60), ('santo_tome', 85), ('san_vicente', 18)],
+    'sc_de_saguier': [('angelica', 60)],
+    'san_vicente': [('angelica', 18)],
 }
 
 CIUDADES_CARGA = ['rafaela', 'santa_fe']
@@ -82,10 +82,11 @@ class MercadoArtificial(SearchProblem):
             capacidad_camion_actual = camion[2]
             paquetes_camion_actual = camion[3]
                 #recorro sus ciudades adyacentes, a las que se puede mover
-            for ciudad in CIUDADES_ADYACENTES[origen_camion_actual]:
+            for ciudad_ir in CIUDADES_ADYACENTES[origen_camion_actual]:
                     #a partir de los km, calculamos el consumo
-                ciudad_adyacente, distancia = ciudad
-                consumo_a_ciudad = (distancia / 100) #distancia/100
+                ciudad_adyacente = ciudad_ir[0]
+                distancia = ciudad_ir[1]
+                consumo_a_ciudad = round(((distancia) / 100),2) #distancia/100
                     #si le alcanza, generamos la acción
                 if capacidad_camion_actual >= consumo_a_ciudad:
                     acciones.append((id_camion_actual,ciudad_adyacente,consumo_a_ciudad))
