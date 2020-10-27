@@ -17,7 +17,7 @@ CIUDADES_ADYACENTES = {
     'esperanza': [('recreo', 20), ('rafaela', 70)],
     'rafaela': [('lehmann', 8), ('susana', 10), ('esperanza', 70)],
     'lehmann': [('rafaela', 8), ('sunchales', 32)],
-    'sunchales': [('lehmann', 8)],
+    'sunchales': [('lehmann', 32)],
     'susana': [('rafaela', 10), ('angelica', 25)],
     'angelica': [('susana', 25), ('sc_de_saguier', 60), ('santo_tome', 85), ('san_vicente', 18)],
     'sc_de_saguier': [('angelica', 60)],
@@ -86,7 +86,7 @@ class MercadoArtificial(SearchProblem):
                     #a partir de los km, calculamos el consumo
                 ciudad_adyacente = ciudad_ir[0]
                 distancia = ciudad_ir[1]
-                consumo_a_ciudad = round(((distancia) / 100),2) #distancia/100
+                consumo_a_ciudad = (distancia / 100) #distancia/100
                     #si le alcanza, generamos la acción
                 if capacidad_camion_actual >= consumo_a_ciudad:
                     acciones.append((id_camion_actual,ciudad_adyacente,consumo_a_ciudad))
