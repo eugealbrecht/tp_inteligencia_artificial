@@ -48,8 +48,9 @@ class MercadoArtificial(SearchProblem):
             if (len(cam[3]) > 0):
                 paquetes_camion = cam[3]
                 for paq in paquetes_camion:
-                    if paq[2] != cam[1]:
-                        return False
+                    for paq_2 in PAQUETES_INICIAL:
+                        if paq[0] == paq_2[0] and paq[2] != cam[1]:
+                            return False
 
         return True
 
@@ -178,6 +179,8 @@ def planear_camiones(metodo, camiones, paquetes):
     #inicial de cada uno desde result
     global CAMIONES_INICIAL
     CAMIONES_INICIAL = list(camiones)
+    global PAQUETES_INICIAL
+    PAQUETES_INICIAL = list(paquetes)
 
     lista_camiones = []
     for camion in camiones:
@@ -209,8 +212,11 @@ def planear_camiones(metodo, camiones, paquetes):
             ciudad = camiones_estado[indice][1]
             nafta = action[2]
             paquetes_camion = camiones_estado[indice][3]
+            lista_paquetes = []
+            for paq in paquetes_camion:
+                lista_paquetes.append(paq[0])
 
-            itinerario.append((id_camion,ciudad,nafta,list(paquetes_camion)))
+            itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
         else:
             pass
 
@@ -233,7 +239,9 @@ itinerario = planear_camiones(
     ('p4', 'recreo', 'san_vicente'),
   ],
 )
+
 """
+
 
 
 if __name__ == '__main__':
