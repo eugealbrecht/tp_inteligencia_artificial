@@ -178,22 +178,22 @@ def planear_camiones(metodo, camiones, paquetes):
     itinerario = []
 
     for action, state in result.path(): #por cada accion y estado del camino
-        if action is not None and state is not None:
+        if action is not None and state is not None: #dejamos de lado la primer acción
             camiones_estado, paquetes_estado = state
             id_camion, ciudad_camion, consumo_a_ciudad = action
 
-            #destino del camion
+            #identificamos el destino del camión
             for indice_camion, camion_estado in enumerate(camiones_estado):
                 if camion_estado[0] == id_camion:
                     indice = indice_camion
-            ciudad = camiones_estado[indice][1]
-            nafta = action[2]
-            paquetes_camion = camiones_estado[indice][3]
-            lista_paquetes = []
-            for paq in paquetes_camion:
-                lista_paquetes.append(paq[0])
+            id_camion_estado, ciudad_camion_estado, nafta_camion_estado, paquetes_camion = camiones_estado[indice]
 
-            itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
+            lista_paquetes = []
+            for paquete_en_camion in paquetes_camion: #agregar unicamente el id de paquete para devolver en el itinerario
+                lista_paquetes.append(paquete_en_camion[0])
+            lista_paquetes = tuple(lista_paquetes)
+
+            itinerario.append((id_camion,ciudad_camion_estado,consumo_a_ciudad,lista_paquetes)) #armado de itinerario
         else:
             pass
 
