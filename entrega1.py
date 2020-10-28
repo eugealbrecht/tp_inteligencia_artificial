@@ -144,11 +144,10 @@ class MercadoArtificial(SearchProblem):
 
         #cargar si se encuentra en sta fe o rafaela
         if nueva_ciudad == 'santa_fe' or nueva_ciudad == 'rafaela':
-            for indice2, camion_inicial in enumerate(CAMIONES_INICIAL):
-                if camion_inicial[0] == nueva_ciudad:
-                    indice_a_utilizar = indice2
-                    capacidad_total_camion = CAMIONES_INICIAL[indice_a_utilizar][2]
-                    capacidad_camion_estado = capacidad_total_camion
+            for camion_inicial in CAMIONES_INICIAL:
+                if camion_inicial[0] == id_camion:
+                    tope_nafta = camion_inicial[2]
+            capacidad_camion_estado = tope_nafta
         else:
             capacidad_camion_estado -= consumo_a_ciudad
 
@@ -167,6 +166,7 @@ class MercadoArtificial(SearchProblem):
         return nuevo_estado
 
     def heuristic(self, state):
+        #return 1
         camiones, paquetes=state
         paquetes=list(paquetes)
         cant_paquetes=len(paquetes)
@@ -197,26 +197,26 @@ def planear_camiones(metodo, camiones, paquetes):
     result = METODOS[metodo](problema)
 
     itinerario = []
-    if result != None:
-        for action, state in result.path(): #por cada accion y estado del camino
-            if action is not None and state is not None:
-                camiones_estado, paquetes_estado = state
-                id_camion, ciudad_camion, consumo_a_ciudad = action
 
-                #destino del camion
-                for indice_camion, camion_estado in enumerate(camiones_estado):
-                    if camion_estado[0] == id_camion:
-                        indice = indice_camion
-                ciudad = camiones_estado[indice][1]
-                nafta = action[2]
-                paquetes_camion = camiones_estado[indice][3]
-                lista_paquetes = []
-                for paq in paquetes_camion:
-                    lista_paquetes.append(paq[0])
+    for action, state in result.path(): #por cada accion y estado del camino
+        if action is not None and state is not None:
+            camiones_estado, paquetes_estado = state
+            id_camion, ciudad_camion, consumo_a_ciudad = action
 
-                itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
-            else:
-                pass
+            #destino del camion
+            for indice_camion, camion_estado in enumerate(camiones_estado):
+                if camion_estado[0] == id_camion:
+                    indice = indice_camion
+            ciudad = camiones_estado[indice][1]
+            nafta = action[2]
+            paquetes_camion = camiones_estado[indice][3]
+            lista_paquetes = []
+            for paq in paquetes_camion:
+                lista_paquetes.append(paq[0])
+
+            itinerario.append((id_camion,ciudad,nafta,tuple(lista_paquetes)))
+        else:
+            pass
 
     return itinerario
 """
@@ -237,7 +237,6 @@ itinerario = planear_camiones(
     ('p4', 'recreo', 'san_vicente'),
   ],
 )
-
 """
 
 
