@@ -145,10 +145,9 @@ class MercadoArtificial(SearchProblem):
         return nuevo_estado
 
     def heuristic(self, state):
-        camiones, paquetes=state
+        camiones, paquetes = state
         consumo_a_ciudad = 0
-        lista=[]
-        consumo_a_ciudad=0
+        lista = []
         for camion in camiones: #por cada camion en el estado, calculo lo minimo que si o si tiene que recorrer.
             id_camion, ciudad_camion, combustible, paquetes_del_camion = camion
             if ciudad_camion in CIUDADES_CARGA:  # si el camion esta en rafaela o santa fe, el costo es 0
@@ -169,7 +168,6 @@ class MercadoArtificial(SearchProblem):
                     consumo_a_ciudad += (min(lista_distancias) / 100) #calculo el consumo con el mínimo costo
 
         return consumo_a_ciudad
-
 
 def planear_camiones(metodo, camiones, paquetes):
     #se crea global de camiones para poder acceder a la capacidad
