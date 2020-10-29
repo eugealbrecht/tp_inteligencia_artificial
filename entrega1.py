@@ -216,6 +216,8 @@ def planear_camiones(metodo, camiones, paquetes):
     return itinerario
 
 if __name__ == '__main__':
+    print('Trabajo práctico inteligencia artificial')
+
     """camiones=[
         # id, ciudad de origen, y capacidad de combustible máxima (litros)
         ('c1', 'rafaela', 1.5),
