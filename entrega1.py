@@ -148,21 +148,25 @@ class MercadoArtificial(SearchProblem):
         camiones, paquetes=state
         consumo_a_ciudad = 0
         lista=[]
-        consumo=0
-        #calculo el combustible que me falta para llegar a destino
-        for camion in camiones:
+        consumo_a_ciudad=0
+        for camion in camiones: #por cada camion en el estado, calculo lo minimo que si o si tiene que recorrer.
             id_camion, ciudad_camion, combustible, paquetes_del_camion = camion
-            for ciudad in CIUDADES_ADYACENTES[ciudad_camion]:
-                if ciudad in CIUDADES_CARGA: #si dentro de las ciudades adyacentes esta dentro de las de carga, se calcula el consumo hasta esa ciudad
-                    ciudad_adyacente, distancia=ciudad
-                    consumo_a_ciudad = (distancia/100)
-                if ciudad not in CIUDADES_CARGA: #si la ciudad no esta dentro de las ciudades de carga, se calcula el menor costo
-                    ciudad_adyacente, distancia = ciudad
-                    consumo = (distancia / 100)
-                    lista.append(consumo)
-                    consumo_a_ciudad=min(lista)
-                if ciudad_camion in CIUDADES_CARGA: #si la ciudad esta en rafaela o santa fe, el costo es=0
-                    consumo_a_ciudad=0
+            if ciudad_camion in CIUDADES_CARGA:  # si el camion esta en rafaela o santa fe, el costo es 0
+                consumo_a_ciudad += 0
+            else: #si está en otra ciudad, miro las ciudades adyacentes y armo una lista con las mismas.
+                for ciudad in CIUDADES_ADYACENTES[ciudad_camion]:
+                    lista.append(ciudad) #guardo la distancia a esa ciudad
+                for item in lista: # recorro la lista que armé, y si encuentro santa fe o rafaela en las adyacentes, calculo el costo hasta esa ciudad.
+                    if item[0] == 'rafaela' or item[0] == 'santa fe':
+                        consumo_a_ciudad += (item[1] / 100)
+                        ciudad_carga = True # marco que se encontró una ciudad de carga
+                    else:
+                        ciudad_carga = False
+                if ciudad_carga == False: #si no está rafaela o santa fe, armo una lista con los costos de las ciudades
+                    lista_distancias = []
+                    for item2 in lista:
+                        lista_distancias.append(item2[1])
+                    consumo_a_ciudad += (min(lista_distancias) / 100) #calculo el consumo con el mínimo costo
 
         return consumo_a_ciudad
 
