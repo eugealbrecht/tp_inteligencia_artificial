@@ -145,12 +145,16 @@ class MercadoArtificial(SearchProblem):
         return nuevo_estado
 
     def heuristic(self, state):
-        #return 1
         camiones, paquetes=state
-        paquetes=list(paquetes)
-        cant_paquetes=len(paquetes)
-        # me faltan tantas acciones como paquetes me falten entregar para llegar a la cantidad total de paquetes en el camion
-        return cant_paquetes - len(state)
+        consumo_a_ciudad = 0
+        #calculo el combustible que me falta para llegar a destino
+        for camion in camiones:
+            id_camion, ciudad_camion, combustible, paquetes_del_camion = camion
+            for ciudad in CIUDADES_ADYACENTES[ciudad_camion]:
+                ciudad_adyacente, distancia=ciudad
+                consumo_a_ciudad += (distancia/100)
+
+        return consumo_a_ciudad
 
 
 def planear_camiones(metodo, camiones, paquetes):
