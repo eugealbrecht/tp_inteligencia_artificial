@@ -156,7 +156,7 @@ class MercadoArtificial(SearchProblem):
                 for ciudad in CIUDADES_ADYACENTES[ciudad_camion]:
                     lista.append(ciudad) #guardo la distancia a esa ciudad
                 for item in lista: # recorro la lista que armé, y si encuentro santa fe o rafaela en las adyacentes, calculo el costo hasta esa ciudad.
-                    if item[0] == 'rafaela' or item[0] == 'santa fe':
+                    if item[0] == 'rafaela' or item[0] == 'santa_fe':
                         consumo_a_ciudad += (item[1] / 100)
                         ciudad_carga = True # marco que se encontró una ciudad de carga
                     else:
